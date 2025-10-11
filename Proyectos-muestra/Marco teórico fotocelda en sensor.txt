@@ -1,0 +1,32 @@
+1. Principio fisiológico: el pulso y la fotopletismografía (PPG)
+El pulso es la manifestación mecánica del bombeo del corazón, que genera variaciones periódicas en el volumen de sangre en los vasos sanguíneos.
+Estas variaciones pueden detectarse ópticamente mediante el principio de la fotopletismografía (PPG), una técnica no invasiva que mide los cambios en la absorción o reflexión de luz a través de los tejidos biológicos.
+Cuando la sangre fluye en cada latido:
+La cantidad de hemoglobina (que absorbe luz) aumenta temporalmente.
+Esto modifica la intensidad de luz reflejada o transmitida por la piel.
+Al colocar un LED rojo o infrarrojo frente a un sensor de luz (LDR o fotodiodo) con un dedo en medio, la señal óptica que llega al sensor oscila con el ritmo cardíaco, generando una señal analógica proporcional al pulso.
+
+2. Principio electrónico de funcionamiento
+El sistema se compone de tres bloques principales:
+🔹 a) Fuente de iluminación (LED)
+El LED rojo emite una intensidad luminosa estable hacia el dedo. La luz atraviesa parcialmente el tejido, y parte de ella es absorbida o reflejada según el flujo sanguíneo.
+🔹 b) Sensor de luz (LDR)
+El LDR (Light Dependent Resistor) es un resistor cuyo valor de resistencia disminuye al aumentar la luz que incide sobre él.
+Durante cada latido:
+Si aumenta la sangre en el dedo → menos luz llega al LDR → aumenta su resistencia → menor señal analógica.
+Si disminuye la sangre → más luz llega al LDR → disminuye la resistencia → mayor señal.
+Esta variación se convierte en un voltaje analógico leído por el ADC del ESP32.
+🔹 c) Procesamiento digital
+El ESP32 lee continuamente el valor analógico proveniente del LDR (0–4095).
+Luego, el programa aplica un suavizado digital (filtro pasa-bajo o promedio móvil) para reducir el ruido y mostrar una señal limpia.
+
+La señal resultante muestra:
+Una componente continua (DC): nivel de luz promedio.
+Una componente pulsátil (AC): variaciones rápidas debidas al pulso.
+Esta componente AC se observa como una onda periódica en el osciloscopio o en el Serial Plotter, sincronizada con los latidos del corazón.
+
+3. Tratamiento de señal
+En un entorno real, la señal de pulso óptico tiene ruido proveniente de:
+Movimiento del dedo.
+Cambios de luz ambiental.
+Fluctuaciones eléctricas del sensor.
